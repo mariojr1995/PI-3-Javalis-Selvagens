@@ -1,0 +1,112 @@
+CREATE DATABASE tadsschoolbd;
+
+USE tadsschoolbd;
+
+CREATE TABLE ALUNO (
+  ID           BIGINT        NOT NULL AUTO_INCREMENT,
+  NOME         VARCHAR(100)  NOT NULL,
+  DATANASCIMENTO  DATE 		 NOT NULL,
+  SEXO 			CHAR(1) 	 NOT NULL,
+  CPF  			VARCHAR(50)  NULL,
+  RG   			VARCHAR(50)  NULL,
+  ORGAOEMISSOR   VARCHAR(10)  NOT NULL,
+  ESTADOEMISSOR  VARCHAR(10)  NOT NULL,
+  TELEFONE   	VARCHAR(12)   NOT NULL,
+  CELULAR   	VARCHAR(12)   NULL,
+  EMAIL   		VARCHAR(80)   NULL,
+  ATIVO   		INT           NOT NULL DEFAULT 1,
+  DT_CADASTRO  	TIMESTAMP     NOT NULL,
+  CONSTRAINT PK_ALUNO PRIMARY KEY (ID)
+);
+
+CREATE TABLE ENDERECO (
+  ID           		BIGINT       NOT NULL AUTO_INCREMENT,
+  RUA         		VARCHAR(100) NOT NULL,
+  NUMERO  			VARCHAR(50)	 NOT NULL,
+  COMPLEMENTO 		CHAR(80)  	 NOT NULL,
+  BAIRRO  			VARCHAR(45)  NULL,
+  ESTADO   			VARCHAR(20)  NULL,
+  IDALUNO           BIGINT       NOT NULL ,
+  CONSTRAINT PK_ENDERECO PRIMARY KEY (ID),
+  CONSTRAINT FK_ALUNO FOREIGN KEY (IDALUNO) REFERENCES ALUNO(ID)
+);
+
+CREATE TABLE RESPONSAVEL (
+  ID           BIGINT        NOT NULL AUTO_INCREMENT,
+  NOME         VARCHAR(100)  NOT NULL,
+  DATANASCIMENTO  DATE 		 NOT NULL,
+  SEXO 			CHAR(1) 	 NOT NULL,
+  CPF  			VARCHAR(50)  NULL,
+  RG   			VARCHAR(50)  NULL,
+  ORGAOEMISSOR   VARCHAR(10)  NOT NULL,
+  ESTADOEMISSOR  VARCHAR(10)  NOT NULL,
+  TELEFONE   	VARCHAR(12)   NOT NULL,
+  CELULAR   	VARCHAR(12)   NULL,
+  IDALUNO           BIGINT    NOT NULL,
+  CONSTRAINT PK_RESPONSAVEL PRIMARY KEY (ID),
+  CONSTRAINT FK_ALUNO_RESPOSAVEL FOREIGN KEY (IDALUNO) REFERENCES ALUNO(ID)
+);
+
+CREATE TABLE CURSO(
+idCurso bigint primary key auto_increment,
+nome varchar(100) not null,
+descricao varchar (100) not null,
+valor float(6,2) not null,
+tipo varchar (100) not null,
+status int(2) not null
+);
+
+
+CREATE TABLE TURMA(
+IdTurma bigint NOT NULL AUTO_INCREMENT,
+nomeTurma VARCHAR (100),
+dataInicio DATE,
+dataFim DATE,
+periodo VARCHAR(100),
+capacidade INT,
+statusTurma int,
+idCurso bigint NOT NULL,
+CONSTRAINT PK_TURMA PRIMARY KEY (IdTurma),
+CONSTRAINT FK_CURSO_TURMA FOREIGN KEY (idCurso) REFERENCES CURSO(idCurso)
+);
+
+CREATE TABLE UNIDADE(
+idUnidade bigint not null auto_increment,
+razaoSocial varchar (100),
+nomeFantasia varchar(100),
+cnpj varchar(100),
+statusUnidade int,
+CONSTRAINT PK_UNIDADE PRIMARY KEY (idUnidade)
+);
+
+CREATE TABLE MATRICULA(
+idMatricula bigint not null auto_increment,
+idAluno bigint,
+idCurso bigint,
+idTurma bigint,
+formaPgto varchar (100),
+dataMatricula DATE,
+obs varchar (100),
+status int,
+CONSTRAINT PK_MATRICULA PRIMARY KEY (idMatricula)
+);
+
+CREATE TABLE USUARIO(
+usu_cod bigINT not null auto_increment,
+usu_nome varchar(100),
+usu_login varchar(100),
+usu_senha varchar (100),
+usu_adm boolean,
+unidade int,
+DATANASCIMENTO  DATE 		 NOT NULL,
+SEXO 			CHAR(1) 	 NOT NULL,
+CPF  			VARCHAR(50)  NULL,
+RG   			VARCHAR(50)  NULL,
+ORGAOEMISSOR   VARCHAR(10)  NOT NULL,
+ESTADOEMISSOR  VARCHAR(10)  NOT NULL,
+TELEFONE   	VARCHAR(12)   NOT NULL,
+CELULAR   	VARCHAR(12)   NULL,
+EMAIL   		VARCHAR(80)   NULL,
+ATIVO   		INT           NOT NULL DEFAULT 1,
+CONSTRAINT PK_USUARIO PRIMARY KEY (usu_cod)
+);
